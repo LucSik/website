@@ -1,0 +1,1697 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Nunito+Sans:wght@400;600&family=Zen+Maru+Gothic:wght@500;700&family=Shippori+Mincho:wght@600&display=swap');
+
+:root {
+  --bg: #fbefea;
+  --glass: rgba(255, 250, 247, 0.55);
+  --glass-strong: rgba(255, 250, 247, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --rose: #d98a9b;
+  --rose-deep: #b8677a;
+  --logo: #d0708d;
+  --sky: #9db8d6;
+  --text: #8a3654;
+  --muted: #b06f86;
+  --shadow: 0 8px 32px rgba(180, 120, 130, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  overflow-x: clip;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Nunito Sans', system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Background orbs */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0;
+  animation: orb-in 1.6s var(--ease) forwards, drift 22s ease-in-out infinite alternate;
+}
+
+.orb-one {
+  width: 340px;
+  height: 340px;
+  background: var(--rose);
+  top: -80px;
+  left: -90px;
+}
+
+.orb-two {
+  width: 300px;
+  height: 300px;
+  background: var(--sky);
+  bottom: 8%;
+  right: -100px;
+  animation-delay: 0.2s, 0s;
+  animation-duration: 1.6s, 26s;
+}
+
+.orb-three {
+  width: 220px;
+  height: 220px;
+  background: #f3c9c0;
+  top: 45%;
+  left: 10%;
+  animation-delay: 0.4s, 0s;
+  animation-duration: 1.6s, 30s;
+}
+
+@keyframes orb-in {
+  to {
+    opacity: 0.55;
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(40px, 30px) scale(1.08);
+  }
+}
+
+/* Glass */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: rgba(255, 250, 247, 0.92);
+  }
+}
+
+/* Page */
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 120px 20px 40px;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 160px);
+  gap: 56px;
+}
+
+.hero-photo {
+  flex: 0 0 auto;
+  width: min(440px, 88vw);
+  aspect-ratio: 4 / 5;
+  padding: 12px;
+  border-radius: 44px;
+}
+
+/* Blooming flowers scattered behind the home page */
+.home {
+  position: relative;
+}
+
+.home > .hero,
+.home > .about-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.flower-field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.field-flower {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  aspect-ratio: 1;
+  opacity: 0.85;
+}
+
+.field-flower.clash {
+  visibility: hidden;
+}
+
+.bloom {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.bloom .petal {
+  transform-origin: 0 0;
+  transform: rotate(var(--angle)) scale(0);
+  animation: petal-open 1.3s cubic-bezier(0.34, 1.45, 0.64, 1) var(--delay) forwards;
+}
+
+.field-flower .petal {
+  animation-delay: calc(var(--delay) + var(--stagger, 0s));
+}
+
+@keyframes petal-open {
+  0% {
+    transform: rotate(calc(var(--angle) - 40deg)) scale(0);
+  }
+  100% {
+    transform: rotate(var(--angle)) scale(1);
+  }
+}
+
+.bloom-centre {
+  transform-origin: 0 0;
+  transform: scale(0);
+  animation: centre-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 1.7s forwards;
+}
+
+.field-flower .bloom-centre {
+  animation-delay: calc(1.7s + var(--stagger, 0s));
+}
+
+@keyframes centre-pop {
+  to {
+    transform: scale(1);
+  }
+}
+
+.bloom-spin {
+  transform-origin: 0 0;
+  animation: bloom-spin 120s linear infinite;
+}
+
+.bloom-small .bloom-spin {
+  animation-duration: 60s;
+  animation-direction: reverse;
+}
+
+@keyframes bloom-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  border-radius: 34px;
+}
+
+h1,
+h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  font-size: clamp(3.2rem, 8vw, 6rem);
+  line-height: 1.05;
+}
+
+.greeting {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 0.28em;
+  max-width: 7.5em;
+}
+
+.word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.word.name {
+  color: var(--rose);
+}
+
+.letter {
+  display: inline-block;
+  opacity: 0;
+  animation: letter-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) var(--delay) forwards;
+}
+
+@keyframes letter-in {
+  0% {
+    opacity: 0;
+    transform: translateY(0.6em) scale(0.6);
+    filter: blur(8px);
+  }
+  60% {
+    opacity: 1;
+    filter: none;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+h2 {
+  font-size: clamp(1.7rem, 4vw, 2.2rem);
+  margin-bottom: 14px;
+}
+
+.about {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: 40px;
+  padding: 28px;
+  border-radius: 36px;
+  position: relative;
+  z-index: 1;
+}
+
+.about-wrap {
+  margin-top: 40px;
+}
+
+.bloom-on-reveal:not(.revealed) .bloom .petal,
+.bloom-on-reveal:not(.revealed) .bloom .bloom-centre {
+  animation-play-state: paused;
+}
+
+.about-photo {
+  order: 2;
+}
+
+.about-text {
+  padding-left: 16px;
+}
+
+.about-photo img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 35%;
+  border-radius: 26px;
+}
+
+.about-text p {
+  margin: 0 0 14px;
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+.org-logos {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  margin-top: 26px;
+}
+
+.org-badge {
+  display: grid;
+  place-items: center;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.reveal:not(.revealed) .org-badge {
+  opacity: 0;
+}
+
+.reveal.revealed .org-badge {
+  animation: card-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.6s backwards;
+}
+
+.reveal.revealed .org-badge + .org-badge {
+  animation-delay: 0.75s;
+}
+
+.org-badge:hover {
+  transform: translateY(-3px) scale(1.04);
+}
+
+.org-badge:focus-visible {
+  outline: 2px solid var(--rose-deep);
+  outline-offset: 6px;
+  border-radius: 8px;
+}
+
+.about-text a {
+  color: var(--rose-deep);
+  font-weight: 600;
+  text-decoration-color: rgba(184, 103, 122, 0.4);
+  text-underline-offset: 3px;
+  transition: color 0.3s var(--ease);
+}
+
+.about-text a:hover {
+  color: var(--text);
+}
+
+.org-logo {
+  width: auto;
+}
+
+.org-logo-warwick {
+  height: 58px;
+}
+
+.org-logo-softwire {
+  height: 84px;
+}
+
+/* Scroll cue */
+.scroll-cue {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px 12px 24px;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  white-space: nowrap;
+  color: #fff;
+  background: var(--rose);
+  box-shadow: 0 10px 30px rgba(180, 103, 122, 0.4);
+  transform: translateX(-50%);
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease), box-shadow 0.4s var(--ease),
+    background 0.3s var(--ease);
+  animation: cue-in 0.9s var(--ease) 1.2s backwards;
+}
+
+.scroll-cue [lang='ja'] {
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+
+.scroll-cue.hidden {
+  opacity: 0;
+  transform: translate(-50%, 16px);
+  pointer-events: none;
+}
+
+.scroll-cue:hover {
+  background: var(--rose-deep);
+  box-shadow: 0 14px 36px rgba(180, 103, 122, 0.5);
+}
+
+.scroll-cue:focus-visible {
+  outline: 2px solid var(--rose-deep);
+  outline-offset: 3px;
+}
+
+.scroll-cue svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: cue-bob 1.6s ease-in-out 2.1s infinite;
+}
+
+@keyframes cue-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+}
+
+@keyframes cue-bob {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+/* Programming page */
+.programming {
+  margin-top: -24px;
+}
+
+/* Pink falling code behind the Programming page */
+.code-rain {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  animation: code-rain-in 1.6s var(--ease) 0.2s forwards;
+}
+
+/* Live background blur would have to be recomputed every frame over the moving code,
+   so on this page the glass surfaces use a near-solid frosted fill instead. */
+.programming .glass,
+.page:has(.programming) ~ .tab-bar {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: rgba(255, 249, 247, 0.88);
+}
+
+@keyframes code-rain-in {
+  to {
+    opacity: 0.6;
+  }
+}
+
+.page-title {
+  text-align: center;
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+}
+
+.lang-columns {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 48px;
+  margin-top: 24px;
+}
+
+.lang-divider {
+  flex: 0 0 2px;
+  border-radius: 2px;
+  background: var(--rose);
+  opacity: 0.45;
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: divider-in 1s var(--ease) 0.4s forwards;
+}
+
+@keyframes divider-in {
+  to {
+    transform: none;
+  }
+}
+
+.group-title {
+  text-align: center;
+  font-size: clamp(1.4rem, 3vw, 1.7rem);
+  margin-bottom: 16px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+
+.lang-group.revealed .group-title {
+  opacity: 1;
+  transform: none;
+}
+
+.lang-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 88px);
+  gap: 14px;
+}
+
+.lang-card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 26px;
+  cursor: default;
+  outline: none;
+  opacity: 0;
+  transform: translateY(24px) scale(0.85);
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.lang-group.revealed .lang-card {
+  animation: card-in 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) calc(0.2s + var(--i) * 0.07s) forwards;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.lang-card:hover,
+.lang-card:focus {
+  box-shadow: 0 14px 40px rgba(180, 120, 130, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.lang-card:focus-visible {
+  box-shadow: 0 0 0 3px var(--rose-deep);
+}
+
+.lang-card:hover .logo,
+.lang-card:focus .logo {
+  transform: rotate(-8deg) scale(1.12);
+}
+
+.logo-row {
+  display: flex;
+  gap: 6px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  fill: var(--logo);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.logo-row:has(.logo + .logo) .logo {
+  width: 30px;
+  height: 30px;
+}
+
+/* Language name label shown on hover (or tap / keyboard focus), like the Food page.
+   It stays in the page text so screen readers still read each language. */
+.lang-name {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 4px);
+  z-index: 3;
+  padding: 5px 13px;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: var(--text);
+  color: #fff;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1rem;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 8px) scale(0.9);
+  transition: opacity 0.25s var(--ease), transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.lang-card:hover .lang-name,
+.lang-card:focus .lang-name {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.lang-card:hover,
+.lang-card:focus {
+  z-index: 3;
+}
+
+/* Food page */
+.food {
+  margin-top: -24px;
+}
+
+.place-setting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  margin-top: 14px;
+}
+
+/* Minimal shadow so the plate and cutlery sit on the page like the flat food icons. */
+.cutlery,
+.plate-svg {
+  filter: drop-shadow(0 2px 2px rgba(150, 110, 125, 0.14));
+}
+
+.cutlery {
+  flex: 0 0 auto;
+  height: 380px;
+  width: auto;
+  opacity: 0;
+  animation: cutlery-in 1s cubic-bezier(0.34, 1.4, 0.64, 1) 0.3s forwards;
+}
+
+.cutlery-fork {
+  --from: -50px;
+  --tilt: -8deg;
+}
+
+.cutlery-knife {
+  --from: 50px;
+  --tilt: 8deg;
+}
+
+@keyframes cutlery-in {
+  from {
+    opacity: 0;
+    transform: translateX(var(--from)) rotate(var(--tilt));
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The plate, with each ranked food placed on it */
+.plate {
+  position: relative;
+  flex: 0 1 430px;
+  aspect-ratio: 1;
+  min-width: 0;
+}
+
+.plate-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(0.85);
+  animation: plate-in 0.9s cubic-bezier(0.34, 1.4, 0.64, 1) 0.2s forwards;
+}
+
+@keyframes plate-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.plate-foods {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.plate-food {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 30%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  cursor: default;
+  outline: none;
+  opacity: 0;
+  animation: food-drop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) calc(0.7s + var(--i) * 0.18s) backwards;
+  animation-fill-mode: both;
+}
+
+@keyframes food-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.food-icon {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.plate-food:hover .food-icon,
+.plate-food:focus-visible .food-icon {
+  transform: rotate(-8deg) scale(1.1);
+}
+
+.plate-food:focus-visible {
+  box-shadow: 0 0 0 3px var(--rose-deep);
+}
+
+.plate-rank {
+  position: absolute;
+  left: -6%;
+  top: 2%;
+  z-index: 1;
+  width: 32%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--rose);
+  color: #fff;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(0.95rem, 2.4vw, 1.3rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* Name label shown on hover (or tap / keyboard focus). Always readable by screen readers. */
+.plate-name {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  z-index: 2;
+  padding: 5px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: var(--text);
+  color: #fff;
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.05rem;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 8px) scale(0.9);
+  transition: opacity 0.25s var(--ease), transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.plate-food:hover .plate-name,
+.plate-food:focus .plate-name {
+  opacity: 1;
+  transform: translate(-50%, -4px);
+}
+
+.page-description {
+  text-align: center;
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin: 2px 0 0;
+}
+
+/* Japanese page */
+.interest {
+  position: relative;
+  isolation: isolate;
+  margin-top: -24px;
+}
+
+/* Falling sakura petals behind the Japanese page content.
+   The layer is fixed to the screen and sits at z-index -1 inside .interest (which isolates
+   its stacking), so petals pass behind the text, cards and photos. Falling uses transform
+   only, so the browser can animate it without re-laying out the page. */
+.sakura-rain {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sakura-fall {
+  position: absolute;
+  top: -60px;
+  left: var(--x);
+  width: var(--s);
+  opacity: 0;
+  will-change: transform;
+  animation: sakura-fall var(--dur) linear var(--d) infinite;
+}
+
+.sakura-petal {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: sakura-sway calc(var(--dur) / 4) ease-in-out var(--d) infinite alternate;
+}
+
+@keyframes sakura-fall {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.45;
+  }
+  90% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: translateY(calc(100vh + 80px));
+    opacity: 0;
+  }
+}
+
+@keyframes sakura-sway {
+  from {
+    transform: translateX(0) rotate(-25deg);
+  }
+  to {
+    transform: translateX(var(--sway)) rotate(160deg);
+  }
+}
+
+.interest-toggle {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  z-index: 2;
+}
+
+.lang-toggle {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  border-radius: 999px;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.lang-toggle:focus-visible {
+  outline: 2px solid var(--rose-deep);
+  outline-offset: 3px;
+}
+
+.lang-option {
+  position: relative;
+  z-index: 1;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--muted);
+  padding: 6px 14px;
+  border-radius: 999px;
+  transition: color 0.35s var(--ease);
+}
+
+.lang-option[lang='ja'] {
+  font-family: 'Zen Maru Gothic', sans-serif;
+}
+
+.lang-option.active {
+  color: #fff;
+}
+
+.lang-toggle:hover .lang-option:not(.active) {
+  color: var(--rose-deep);
+}
+
+.lang-toggle-thumb {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: 999px;
+  background: var(--rose);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.lang-toggle.ja .lang-toggle-thumb {
+  transform: translateX(100%);
+}
+
+.interest-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+}
+
+.interest-title [lang='ja'] {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-weight: 700;
+}
+
+.flag {
+  width: 1.1em;
+  height: auto;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 4px 10px rgba(180, 120, 130, 0.25));
+}
+
+.flag-field {
+  fill: #fff;
+  stroke: #f1c9d3;
+  stroke-width: 1;
+}
+
+.flag-sun {
+  fill: #d24d6b;
+}
+
+.interest-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 40px;
+  margin-top: 26px;
+}
+
+.interest-text {
+  padding: 28px 32px;
+  border-radius: 36px;
+}
+
+.interest-body p {
+  margin: 0 0 14px;
+}
+
+.interest-body p:last-child {
+  margin-bottom: 0;
+}
+
+.interest-body.ja {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-weight: 500;
+  line-height: 1.95;
+}
+
+.interest-body a {
+  color: var(--rose-deep);
+  font-weight: 600;
+  text-decoration-color: rgba(184, 103, 122, 0.4);
+  text-underline-offset: 3px;
+  transition: color 0.3s var(--ease);
+}
+
+.interest-body a:hover {
+  color: var(--text);
+}
+
+.lang-swap {
+  animation: swap-in 0.6s var(--ease);
+}
+
+@keyframes swap-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(6px);
+  }
+}
+
+.interest-photo {
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 30px;
+  border: 6px solid rgba(255, 255, 255, 0.75);
+  box-shadow: var(--shadow);
+}
+
+.photo-feature {
+  width: 400px;
+  object-position: center 45%;
+}
+
+/* Favourite kanji */
+.kanji-section {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+  margin-top: 64px;
+}
+
+.kanji-photo {
+  width: 400px;
+  object-position: center 30%;
+}
+
+.kanji-card {
+  padding: 30px 36px 34px;
+  border-radius: 36px;
+  text-align: center;
+}
+
+.kanji-heading {
+  font-size: clamp(1.5rem, 3vw, 1.8rem);
+}
+
+.kanji-heading[lang='ja'] {
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-weight: 700;
+}
+
+.kanji-word {
+  font-family: 'Shippori Mincho', 'Zen Maru Gothic', serif;
+  font-weight: 600;
+  font-size: clamp(5rem, 11vw, 7.5rem);
+  line-height: 1.15;
+  margin: 14px 0 0;
+}
+
+.kanji-word rt,
+.kanji-part-char rt {
+  ruby-align: center;
+  font-family: 'Zen Maru Gothic', sans-serif;
+  font-weight: 500;
+  font-size: 0.24em;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+.kanji-meaning {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 6px 0 26px;
+}
+
+.kanji-parts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+}
+
+.kanji-part {
+  min-width: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 22px 16px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--glass-border);
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+}
+
+.kanji-section.revealed .kanji-part {
+  animation: card-in 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) calc(0.6s + var(--i) * 0.15s) forwards;
+}
+
+.kanji-part-char {
+  font-family: 'Shippori Mincho', 'Zen Maru Gothic', serif;
+  font-weight: 600;
+  font-size: 3.2rem;
+  line-height: 1.25;
+}
+
+.kanji-part-meaning {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* Gallery page */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Wider than the other pages so the artwork can be large: up to 1240px, centred. */
+.gallery {
+  margin-top: -24px;
+  width: min(1240px, calc(100vw - 40px));
+  margin-left: 50%;
+  translate: -50% 0;
+}
+
+/* Pinterest-style masonry: columns filled from the top, each picture at its natural shape. */
+.gallery-columns {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-top: 26px;
+}
+
+.gallery-column {
+  flex: 1 1 0;
+  min-width: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.gallery-item {
+  opacity: 0;
+  animation: card-in 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) calc(0.35s + var(--i) * 0.15s) forwards;
+}
+
+.gallery-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #f3e3df;
+  cursor: zoom-in;
+  box-shadow: 0 6px 18px rgba(150, 100, 115, 0.16);
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s var(--ease);
+}
+
+.gallery-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: var(--ratio);
+  transition: transform 0.6s var(--ease), filter 0.4s var(--ease);
+}
+
+/* Soft blush wash on hover, like a pin being picked up */
+.gallery-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(138, 54, 84, 0.28), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.gallery-frame:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(150, 100, 115, 0.28);
+}
+
+.gallery-frame:hover img {
+  transform: scale(1.03);
+}
+
+.gallery-frame:hover::after {
+  opacity: 1;
+}
+
+.gallery-frame:focus-visible {
+  outline: 3px solid var(--rose-deep);
+  outline-offset: 4px;
+}
+
+/* Larger view */
+.gallery-lightbox {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  max-width: min(92vw, 1200px);
+  max-height: 90vh;
+  overflow: visible;
+}
+
+.gallery-lightbox::backdrop {
+  background: rgba(74, 34, 50, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+.gallery-lightbox[open] {
+  animation: lightbox-in 0.45s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+@keyframes lightbox-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+.lightbox-figure {
+  position: relative;
+  margin: 0;
+}
+
+.lightbox-figure img {
+  display: block;
+  max-width: min(92vw, 1200px);
+  max-height: 86vh;
+  width: auto;
+  height: auto;
+  border-radius: 22px;
+  border: 8px solid #fff9f7;
+  box-shadow: 0 24px 60px rgba(40, 10, 20, 0.35);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--rose);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(74, 34, 50, 0.3);
+  transition: background 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.lightbox-close:hover {
+  background: var(--rose-deep);
+  transform: scale(1.08);
+}
+
+.lightbox-close:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+.lightbox-close svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+/* Tab bar */
+.tab-bar {
+  position: fixed;
+  left: 50%;
+  top: 22px;
+  z-index: 10;
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  max-width: calc(100vw - 24px);
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-radius: 999px;
+  background: var(--glass-strong);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  transform: translate(-50%, -160%);
+  animation: bar-in 0.9s var(--ease) 0.6s forwards;
+}
+
+.tab-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 22px 10px 18px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.tab-icon {
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.tab:hover .tab-icon {
+  transform: translateY(-1px) scale(1.12);
+}
+
+.tab:hover {
+  color: var(--rose-deep);
+}
+
+.tab.active {
+  background: var(--rose);
+  color: #fff;
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--rose-deep);
+  outline-offset: 2px;
+}
+
+@keyframes bar-in {
+  to {
+    transform: translate(-50%, 0);
+  }
+}
+
+/* Load animations */
+.rise {
+  opacity: 0;
+  animation: rise 0.95s var(--ease) var(--delay, 0s) forwards;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+    filter: blur(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  filter: blur(10px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease), filter 1s var(--ease);
+}
+
+.reveal .about-photo,
+.reveal .about-text {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+}
+
+.reveal.revealed,
+.reveal.revealed .about-photo,
+.reveal.revealed .about-text {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+.reveal.revealed .about-photo {
+  transition-delay: 0.15s;
+}
+
+.reveal.revealed .about-text {
+  transition-delay: 0.3s;
+}
+
+@media (max-width: 720px) {
+  .field-flower {
+    left: var(--mx);
+    top: var(--my);
+    width: var(--msize);
+  }
+
+  .interest {
+    margin-top: -14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .interest-toggle {
+    position: static;
+    order: 2;
+    margin-top: 10px;
+  }
+
+  .interest-title {
+    order: 1;
+  }
+
+  .interest-layout {
+    order: 3;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .interest-photo {
+    border-width: 4px;
+    border-radius: 22px;
+  }
+
+  .photo-feature {
+    order: -1;
+    justify-self: center;
+    width: 290px;
+  }
+
+  .kanji-section {
+    order: 4;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 18px;
+    margin-top: 36px;
+    width: 100%;
+  }
+
+  .kanji-photo {
+    width: 290px;
+  }
+
+  .kanji-card {
+    width: 100%;
+    padding: 22px 16px 24px;
+    border-radius: 28px;
+  }
+
+  .kanji-parts {
+    gap: 12px;
+  }
+
+  .kanji-part {
+    min-width: 0;
+    flex: 1;
+    padding: 12px 10px 14px;
+  }
+
+  .kanji-part-char {
+    font-size: 2.6rem;
+  }
+
+  .interest-text {
+    padding: 18px 20px;
+    border-radius: 28px;
+    font-size: 0.95rem;
+  }
+
+  .programming,
+  .food,
+  .gallery {
+    margin-top: -14px;
+  }
+
+  .gallery {
+    width: auto;
+    margin-left: 0;
+    translate: none;
+  }
+
+  .gallery-columns {
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .gallery-column {
+    width: 100%;
+    gap: 14px;
+  }
+
+  .gallery-frame {
+    border-radius: 18px;
+  }
+
+  .lightbox-close {
+    top: -10px;
+    right: -6px;
+  }
+
+  .tab {
+    padding: 10px 13px 10px 11px;
+    font-size: 0.88rem;
+    gap: 5px;
+  }
+
+  .tab-icon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .place-setting {
+    gap: 6px;
+    margin-top: 28px;
+  }
+
+  .cutlery {
+    height: 230px;
+  }
+
+  .plate-name {
+    font-size: 0.95rem;
+    padding: 4px 11px;
+  }
+
+  .lang-columns {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    margin-top: 12px;
+  }
+
+  .lang-divider {
+    flex-basis: 2px;
+    width: 70%;
+    transform: scaleX(0);
+    transform-origin: center;
+  }
+
+  .lang-grid {
+    grid-template-columns: repeat(3, 76px);
+    gap: 12px;
+  }
+
+  .lang-card {
+    border-radius: 22px;
+  }
+
+  .logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .logo-row:has(.logo + .logo) .logo {
+    width: 26px;
+    height: 26px;
+  }
+
+  .lang-name {
+    font-size: 0.9rem;
+    padding: 4px 11px;
+  }
+
+  .page {
+    padding: 100px 16px 60px;
+  }
+
+  .hero {
+    flex-direction: column;
+    gap: 28px;
+    min-height: 0;
+  }
+
+  .greeting {
+    justify-content: center;
+    max-width: none;
+  }
+
+  .about {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 18px;
+    border-radius: 30px;
+  }
+
+  .about-photo {
+    order: 0;
+  }
+
+  .about-text {
+    padding: 0 6px 8px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb,
+  .rise,
+  .letter,
+  .tab-bar {
+    animation: none;
+    opacity: 1;
+    filter: none;
+  }
+
+  .orb {
+    opacity: 0.55;
+  }
+
+  .tab-bar {
+    transform: translate(-50%, 0);
+  }
+
+  .scroll-cue,
+  .scroll-cue svg,
+  .bloom-spin {
+    animation: none;
+  }
+
+  .sakura-fall {
+    display: none;
+  }
+
+  .bloom .petal {
+    animation: none;
+    transform: rotate(var(--angle));
+  }
+
+  .bloom-centre {
+    animation: none;
+    transform: none;
+  }
+
+  .reveal,
+  .reveal .about-photo,
+  .group-title,
+  .lang-divider,
+  .lang-swap,
+  .kanji-part,
+  .kanji-section.revealed .kanji-part,
+  .reveal.revealed .org-badge,
+  .gallery-item,
+  .gallery-lightbox[open],
+  .cutlery,
+  .plate-svg,
+  .plate-food,
+  .lang-card,
+  .lang-group.revealed .lang-card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .reveal .about-text {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
